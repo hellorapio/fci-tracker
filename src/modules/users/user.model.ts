@@ -33,6 +33,12 @@ const userSchema = new Schema<IUser>(
   { timestamps: true, versionKey: false }
 );
 
+userSchema.pre("save", async function (next) {
+  if (!this.isModified("password")) return next();
+  this.password = await bcrypt.hash(this.password, 8);
+  next();
+});
+
 userSchema.methods.correctPassword = async (
   pass: string,
   realPass: string

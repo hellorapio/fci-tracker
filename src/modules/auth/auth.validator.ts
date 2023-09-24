@@ -13,7 +13,7 @@ const email = Joi.string()
   });
 
 const name = Joi.string()
-  .regex(/^[A-Z][a-zA-Z]* [A-Z][a-zA-Z]*$/)
+  .regex(/^[a-zA-Z\s]+$/)
   .message("Name cannot contain characters other than letters")
   .trim();
 
@@ -30,8 +30,10 @@ const passwordConfirm = Joi.string()
 
 const role = Joi.string()
   .valid("instructor", "student", "professor")
+  .required()
   .messages({
     "any.only": "This role is not allowed in our application",
+    "any.required": "The role is Required",
   });
 
 const login = Joi.object({
@@ -54,6 +56,11 @@ const signup = Joi.object({
 class AuthValidator {
   static async login(body: IUser) {
     const data = catchValid(login, body);
+    return data;
+  }
+
+  static async signup(body: IUser) {
+    const data = catchValid(signup, body);
     return data;
   }
 }

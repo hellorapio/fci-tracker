@@ -9,6 +9,8 @@ const login = async (req: Request, res: Response) => {
 };
 
 const signup = async (req: Request, res: Response) => {
+  const body = await AuthValidator.signup(req.body);
+  const user = await AuthService.signup(body);
   res.status(200).json({ status: "Success" });
 };
 
