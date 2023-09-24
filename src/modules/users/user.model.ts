@@ -1,5 +1,7 @@
 import { Document, model, Schema } from "mongoose";
 import bcrypt from "bcryptjs";
+import slugify from "slugify";
+import { randomBytes } from "crypto";
 interface IUserMethods extends Document {
   correctPassword(pass: string, realPass: string): Promise<boolean>;
 }
@@ -36,6 +38,14 @@ const userSchema = new Schema<IUser>(
 userSchema.pre("save", async function (next) {
   if (!this.isModified("password")) return next();
   this.password = await bcrypt.hash(this.password, 8);
+  next();
+});
+
+userSchema.pre("save", async function (next) {
+  if (!this.isNew) return next();
+  this.username = slugify(this.name + randomBytes(3).toString("hex"), {
+    lower: true,
+  });
   next();
 });
 
