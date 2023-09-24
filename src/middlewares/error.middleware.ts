@@ -14,14 +14,9 @@ const sendErrorDev = (err: AppError, res: Response) => {
 };
 
 const sendErrorProd = (err: AppError, res: Response) => {
-  if (err.isOperational)
-    res.status(err.statusCode).json({
-      status: err.status,
-      stack: err.stack,
-      err,
-      message: err.message,
-    });
-  else res.status(500).json({ err });
+  res
+    .status(err.statusCode)
+    .json({ status: err.status, message: err.message });
 };
 
 const errorHandling = async (
