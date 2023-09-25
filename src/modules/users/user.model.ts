@@ -7,6 +7,8 @@ interface IUserMethods extends Document {
 }
 
 interface IUserSchema extends Document {
+  photo: string;
+  gender: "male" | "female";
   name: string;
   email: string;
   password: string;
@@ -22,6 +24,8 @@ export type IUser = IUserSchema & IUserMethods;
 
 const userSchema = new Schema<IUser>(
   {
+    photo: String,
+    gender: String,
     name: String,
     email: { type: String, unique: true },
     username: { type: String, unique: true },
@@ -43,7 +47,7 @@ userSchema.pre("save", async function (next) {
 
 userSchema.pre("save", async function (next) {
   if (!this.isNew) return next();
-  this.username = slugify(this.name + randomBytes(3).toString("hex"), {
+  this.username = slugify(this.name + randomBytes(4).toString("hex"), {
     lower: true,
   });
   next();
