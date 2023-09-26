@@ -36,6 +36,14 @@ const role = Joi.string()
     "any.required": "The role is Required",
   });
 
+const nationalId = Joi.string()
+  .length(14)
+  .message("This national id isn't corrrect")
+  .regex(/^[0-9]+$/)
+  .message("The national id only contains numbers")
+  .required()
+  .messages({ "any.required": "The national id is required" });
+
 const login = Joi.object({
   email,
   password,
@@ -51,6 +59,7 @@ const signup = Joi.object({
   email,
   passwordConfirm,
   role,
+  nationalId,
 });
 
 class AuthValidator {

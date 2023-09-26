@@ -13,7 +13,7 @@ interface IUserSchema extends Document {
   email: string;
   password: string;
   username: string;
-  role: "instructor" | "student" | "professor" | "moderator";
+  role: "instructor" | "student" | "professor" | "moderator" | "admin";
   passwordChangedAt: Date;
   active: boolean;
   loggedOutAt: Date;

@@ -1,4 +1,5 @@
 import AppError from "../../error/appError";
+import signToken from "../../utils/signToken";
 import User, { IUser } from "./../users/user.model";
 
 class AuthService {
@@ -8,18 +9,19 @@ class AuthService {
     if (!user || !(await user.correctPassword(password, user.password)))
       throw new AppError("Incorrect email or password", 401);
 
-    return user;
+    return signToken(user.id);
   }
 
-  static async signup({ email, password, role, name }: IUser) {
+  static async signup({ email, password, role, name, nationalId }: IUser) {
     const user = await User.create({
       email,
       password,
       role,
       name,
+      nationalId,
     });
 
-    return user;
+    return signToken(user.id);
   }
 }
 
