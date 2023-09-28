@@ -2,7 +2,6 @@ import { Request, Response } from "express";
 import AuthValidator from "./auth.validator";
 import AuthService from "./auth.service";
 import sendResponse from "../../utils/sendResponse";
-import UserService from "../users/user.service";
 
 const login = async (req: Request, res: Response) => {
   const body = await AuthValidator.login(req.body);

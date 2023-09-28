@@ -1,7 +1,7 @@
-import { Document, model, Schema } from "mongoose";
+import { model, Schema, Document } from "mongoose";
+import { randomBytes } from "crypto";
 import bcrypt from "bcryptjs";
 import slugify from "slugify";
-import { randomBytes } from "crypto";
 
 interface IUserMethods extends Document {
   correctPassword(pass: string, realPass: string): Promise<boolean>;
