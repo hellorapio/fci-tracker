@@ -2,6 +2,7 @@
 import xss from "xss-clean";
 //@ts-ignore
 import hpp from "hpp";
+import cookieParser from "cookie-parser";
 import express, { Express } from "express";
 import helmet from "helmet";
 import rateLimit from "express-rate-limit";
@@ -27,6 +28,8 @@ const middlewares = async (app: Express) => {
       limit: "10kb",
     })
   );
+
+  app.use(cookieParser());
 
   app.use(sanitize());
   app.use(xss());

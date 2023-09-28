@@ -9,7 +9,7 @@ class AuthService {
     if (!user || !(await user.correctPassword(password, user.password)))
       throw new AppError("Incorrect email or password", 401);
 
-    return signToken(user.id);
+    return await signToken(user.id);
   }
 
   static async signup({ email, password, role, name, nationalId }: IUser) {
@@ -21,7 +21,11 @@ class AuthService {
       nationalId,
     });
 
-    return signToken(user.id);
+    return await signToken(user.id);
+  }
+
+  static async logout(id: string) {
+    await User.findByIdAndUpdate(id, { loggedOutAt: Date.now() });
   }
 }
 

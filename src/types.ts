@@ -7,3 +7,7 @@ declare global {
     }
   }
 }
+
+export type s = string;
+
+ 

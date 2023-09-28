@@ -2,8 +2,11 @@ import { Document, model, Schema } from "mongoose";
 import bcrypt from "bcryptjs";
 import slugify from "slugify";
 import { randomBytes } from "crypto";
+
 interface IUserMethods extends Document {
   correctPassword(pass: string, realPass: string): Promise<boolean>;
+  changedPassword(iat: number): Promise<boolean>;
+  loggedOut(iat: number): Promise<boolean>;
 }
 
 interface IUserSchema extends Document {
@@ -29,7 +32,7 @@ const userSchema = new Schema<IUser>(
     name: String,
     email: { type: String, unique: true },
     username: { type: String, unique: true },
-    nationalId: String,
+    nationalId: { type: String, select: false },
     password: { type: String, select: false },
     role: String,
     active: { type: Boolean, default: true, select: false },
@@ -47,7 +50,7 @@ userSchema.pre("save", async function (next) {
 
 userSchema.pre("save", async function (next) {
   if (!this.isNew) return next();
-  this.username = slugify(this.name + randomBytes(4).toString("hex"), {
+  this.username = slugify(this.name + randomBytes(3).toString("hex"), {
     lower: true,
   });
   next();
@@ -58,6 +61,16 @@ userSchema.methods.correctPassword = async (
   realPass: string
 ) => {
   return await bcrypt.compare(pass, realPass);
+};
+
+userSchema.methods.changedPassword = async function (iat: number) {
+  if (this.passwordChangedAt)
+    return iat < Math.trunc(this.passwordChangedAt.getTime() / 1000);
+};
+
+userSchema.methods.loggedOut = async function (iat: number) {
+  if (this.loggedOutAt)
+    return iat < Math.trunc(this.loggedOutAt.getTime() / 1000);
 };
 
 const User = model<IUser>("user", userSchema);
