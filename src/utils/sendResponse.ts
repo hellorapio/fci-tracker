@@ -17,7 +17,12 @@ const sendResponse = (
     };
     res.cookie("jwt", token, cookieOptions);
   } else if (token === "") {
-    res.cookie("jwt", "");
+    const cookieOptions = {
+      secure: config.env === "prod",
+      httpOnly: true,
+      expires: new Date(Date.now() + 2 * 1000),
+    };
+    res.cookie("jwt", "", cookieOptions);
   }
 
   res.status(code).json({ status: "success", data });

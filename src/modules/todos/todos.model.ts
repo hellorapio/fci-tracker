@@ -1,6 +1,6 @@
 import { model, Schema, Document } from "mongoose";
 
-interface ITodo extends Document {}
+export interface ITodo extends Document {}
 
 const todoSchema = new Schema<ITodo>(
   {},

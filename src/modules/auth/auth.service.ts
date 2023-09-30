@@ -1,11 +1,11 @@
 import AppError from "../../error/appError";
 import signToken from "../../utils/signToken";
-import User, { IUser } from "./../users/user.model";
+import userRepository from "../users/user.repository";
+import { IUser } from "./../users/user.model";
 
 class AuthService {
   static async login({ email, password }: IUser) {
-    const user = await User.findOne({ email }).select("password");
-
+    const user = await userRepository.findOne({ email }, "+password");
     if (!user || !(await user.correctPassword(password, user.password)))
       throw new AppError("Incorrect email or password", 401);
 
@@ -13,7 +13,7 @@ class AuthService {
   }
 
   static async signup({ email, password, role, name, nationalId }: IUser) {
-    const user = await User.create({
+    const user = await userRepository.insertOne({
       email,
       password,
       role,
@@ -25,7 +25,9 @@ class AuthService {
   }
 
   static async logout(id: string) {
-    await User.findByIdAndUpdate(id, { loggedOutAt: Date.now() });
+    await userRepository.findByIdAndUpdate(id, {
+      loggedOutAt: Date.now(),
+    });
   }
 }
 

@@ -11,8 +11,8 @@ class BaseRepository<T> {
     return await this.model.create(payload);
   }
 
-  async findOne(filter: object) {
-    return await this.model.findOne(filter).lean();
+  async findOne(filter: object, select: string = "") {
+    return await this.model.findOne(filter).select(select);
   }
 
   async findOneAndUpdate(filter: object, payload: object) {
@@ -21,8 +21,8 @@ class BaseRepository<T> {
       .lean();
   }
 
-  async findById(id: string) {
-    return await this.model.findById(id).lean();
+  async findById(id: string, select: string = "") {
+    return await this.model.findById(id).select(select).lean();
   }
 
   async findByIdAndUpdate(id: string, payload: object) {
