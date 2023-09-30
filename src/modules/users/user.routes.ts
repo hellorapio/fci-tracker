@@ -1,8 +1,8 @@
-import express from "express";
+import { Router } from "express";
 import userController from "./user.controller";
 import authorization from "../../middlewares/auth.middleware";
 
-const router = express.Router();
+const router = Router();
 
 router.use(authorization);
 
