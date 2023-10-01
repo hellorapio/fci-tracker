@@ -24,7 +24,9 @@ const authorization = async (
 
   // 2 Verify the token
 
-  const { iat, id } = await verify(token);
+  const { iat, id } = await verify(token).catch((err) => {
+    throw new AppError((err as Error).message, 401);
+  });
 
   // 3 Check if the user still in our System
 

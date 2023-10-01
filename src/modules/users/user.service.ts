@@ -4,12 +4,12 @@ import UserRepository from "./user.repository";
 
 class UserService {
   static async updateMe(id: string, body: IUser) {
-    const user = await UserRepository.findByIdAndUpdate(id, body);
+    const user = await UserRepository.updateOneById(id, body);
     return user;
   }
 
   static async deleteMe(id: string) {
-    await UserRepository.findByIdAndUpdate(id, { active: false });
+    await UserRepository.updateOneById(id, { active: false });
   }
 
   static async getUser(username: string) {

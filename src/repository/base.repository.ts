@@ -15,17 +15,17 @@ class BaseRepository<T> {
     return await this.model.findOne(filter).select(select);
   }
 
-  async findOneAndUpdate(filter: object, payload: object) {
-    return await this.model
-      .findOneAndUpdate(filter, payload, { new: true })
-      .lean();
+  async updateOne(filter: object, payload: object) {
+    return await this.model.findOneAndUpdate(filter, payload, {
+      new: true,
+    });
   }
 
   async findById(id: string, select: string = "") {
     return await this.model.findById(id).select(select).lean();
   }
 
-  async findByIdAndUpdate(id: string, payload: object) {
+  async updateOneById(id: string, payload: object) {
     return await this.model.findByIdAndUpdate(id, payload, { new: true });
   }
 }

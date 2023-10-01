@@ -1,7 +1,8 @@
-import { model, Schema, Document } from "mongoose";
+import { model, Schema, Document, ObjectId, SchemaTypes } from "mongoose";
 import { randomBytes } from "crypto";
 import bcrypt from "bcryptjs";
 import slugify from "slugify";
+import { number } from "joi";
 
 interface IUserMethods extends Document {
   correctPassword(pass: string, realPass: string): Promise<boolean>;
@@ -21,6 +22,8 @@ interface IUserSchema extends Document {
   active: boolean;
   loggedOutAt: Date;
   nationalId: string;
+  year: number;
+  semester: number;
 }
 
 export type IUser = IUserSchema & IUserMethods;
@@ -30,6 +33,8 @@ const userSchema = new Schema<IUser>(
     photo: String,
     gender: String,
     name: String,
+    year: Number,
+    semester: Number,
     email: { type: String, unique: true },
     username: { type: String, unique: true },
     nationalId: { type: String, select: false },

@@ -25,7 +25,7 @@ class AuthService {
   }
 
   static async logout(id: string) {
-    await userRepository.findByIdAndUpdate(id, {
+    await userRepository.updateOneById(id, {
       loggedOutAt: Date.now(),
     });
   }
